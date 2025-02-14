@@ -6,6 +6,19 @@ body {
     display: flex;
     flex-direction: row;
     background-color: #f4f4f4;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .form-container{
+    height: 100vh;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .sidebar-container{
+    height: 100vh;
+    overflow-y: auto;
   }
   
   .sidebar {
