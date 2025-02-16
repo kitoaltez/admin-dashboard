@@ -29,13 +29,13 @@
         <table>
             <thead>
                 <tr>
-                    <th>No.</th>
-                    <th>Product Code</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Image</th>
+                    <th>Product Id</th>
+                    <th>Product Name</th>
+                    <th>Product Description</th>
+                    <th>Product Price</th>
+                    <th>Product Sold</th>
+                    <th>Image Url</th>
+                    <th>Product Stock</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -46,40 +46,70 @@
 
     <div id="productModal" class="modal">
         <div class="modal-content">
-            <div class="GG">
+            <div class="close_btn">
                 <span class="close">&times;</span>
             </div>
             <h2>Add Product</h2>
             <div class="form-container">
-            <form id="productForm">
-                <label for="productCode">Product Code:</label>
-                <input type="text" id="productCode" required>
-            
-                <label for="productName">Name:</label>
+            <form action="addProduct.php" method="POST" id="productForm">
+
+                <label for="productName">Product Name:</label>
                 <input type="text" id="productName" name="productName" required>
             
-                <label for="category">Category:</label>
-                <input type="text" id="category" required>
+                <label for="Product Description">Product Description:</label>
+                <input type="text" id="category" name="productDescription" required>
             
-                <label for="price">Price:</label>
-                <input type="number" id="price" required>
+                <label for="productPrice">Product Price:</label>
+                <input type="number" id="price" name="productPrice" required>
             
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" required>
+                <label for="productSold">Product Sold</label>
+                <input type="number" id="quantity" name="productSold" required>
             
-                <label for="description">Description:</label>
-                <textarea id="description" rows="4" required></textarea>
+                <label for="imageURl`">Product imageURl:</label>
+                <input id="description" name="productImgUrl" required></input>
             
-                <label for="imageUpload">Upload Image:</label>
-                <input type="file" id="imageUpload" accept="image/*">
-            
-                <img id="previewImage" src="" alt="Image Preview" style="display:none; width: 100px; margin-top: 10px;" />
-            
+                <label for="imageUrl">Product Stock:</label>
+                <input type="text" name="productStock" placeholder="Stock" required>
+        
                 <button type="submit">Add</button>
             </form>
             </div>
         </div>
     </div>
+
+            <div id="editProductModal" class="modal">
+    <div class="modal-content">
+        <div class="close_btn">
+            <span class="edit-close">&times;</span>
+        </div>
+        <h2>Edit Product</h2>
+        <div class="form-container">
+            <form id="editProductForm" action="editProduct.php" method="POST">
+                <input type="hidden" id="editProductId" name="productId">
+
+                <label for="editProductName">Product Name:</label>
+                <input type="text" id="editProductName" name="productName" required>
+
+                <label for="editProductDescription">Product Description:</label>
+                <input type="text" id="editProductDescription" name="productDescription" required>
+
+                <label for="editProductPrice">Product Price:</label>
+                <input type="number" id="editProductPrice" name="productPrice" required>
+
+                <label for="editProductSold">Product Sold:</label>
+                <input type="number" id="editProductSold" name="productSold" required>
+
+                <label for="editProductImageUrl">Product Image URL:</label>
+                <input type="text" id="editProductImageUrl" name="productImgUrl" required>
+
+                <label for="editProductStock">Product Stock:</label>
+                <input type="number" id="editProductStock" name="productStock" required>
+
+                <button type="submit" id="updateProductBtn">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
 
     <div id="productDetailsModal" class="modal">
         <div class="modal-content">

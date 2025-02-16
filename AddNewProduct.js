@@ -1,170 +1,176 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('productModal');
+    const addProductModal = document.getElementById('productModal');
+    const editProductModal = document.getElementById('editProductModal');
     const addProductBtn = document.getElementById('addProductBtn');
-    const closeModal = document.querySelector('.close');
-    const productForm = document.getElementById('productForm');
-    const productTable = document.getElementById('productTable');
-    const imageUpload = document.getElementById('imageUpload');
-    const previewImage = document.getElementById('previewImage');
-    const productDetailsModal = document.getElementById('productDetailsModal');
-    const closeDetailsModal = document.querySelector('.close-details');
-    const productDetailsContent = document.getElementById('productDetailsContent');
+    const closeAddModal = document.querySelector('.close');
+    const closeEditModal = document.querySelector('.edit-close');
+    const editProductForm = document.getElementById('editProductForm');
+    const addProductForm = document.getElementById('productForm');
 
-    // Open modal
+    console.log("DOM fully loaded");
+
+    // Open Add Product Modal
     addProductBtn.addEventListener('click', () => {
-        modal.style.display = 'flex';
+        addProductForm.reset();
+        addProductModal.style.display = 'flex';
     });
 
-    // Close modal
-    closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
+    // Close Add Product Modal
+    closeAddModal.addEventListener('click', () => {
+        addProductModal.style.display = 'none';
     });
 
-    // Close details modal
-    closeDetailsModal.addEventListener('click', () => {
-        productDetailsModal.style.display = 'none';
-    });
+    // Close Edit Product Modal
+    if (closeEditModal) {
+        closeEditModal.addEventListener('click', () => {
+            editProductModal.style.display = 'none';
+        });
+    }
 
-    // Preview image
-    imageUpload.addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                previewImage.src = e.target.result;
-                previewImage.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+    fetchProducts();
+
+    function fetchProducts() {
+        console.log("Fetching products...");
+
+        fetch("productFetch.php")
+            .then(response => response.json())
+            .then(data => {
+                console.log("Products received:", data); // Debugging
+
+                let tableBody = document.getElementById("productTable");
+                tableBody.innerHTML = "";
+
+                data.forEach(product => {
+                    let row = `
+                        <tr>
+                            <td>${product.product_id}</td>
+                            <td>${product.product_name}</td>
+                            <td>${product.product_description}</td>
+                            <td>${product.product_price}</td>
+                            <td>${product.product_sold}</td>
+                            <td>
+                                <img src="${product.product_imgUrl}" width="100" alt="Product Image">
+                            </td>
+                            <td>${product.product_stock}</td>
+                            <td>
+                                <button class="edit-btn" 
+                                    data-id="${product.product_id}" 
+                                    data-name="${product.product_name}"
+                                    data-description="${product.product_description}"
+                                    data-price="${product.product_price}"
+                                    data-sold="${product.product_sold}"
+                                    data-image="${product.product_imgUrl}"
+                                    data-stock="${product.product_stock}">
+                                    Edit
+                                </button>
+                                <button class="delete-btn" data-id="${product.product_id}">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error("Error fetching products:", error));
+    }
+
+    document.addEventListener('click', function (event) {
+        if (event.target.matches('.edit-btn')) {
+            const productId = event.target.dataset.id;
+            const name = event.target.dataset.name;
+            const description = event.target.dataset.description;
+            const price = event.target.dataset.price;
+            const sold = event.target.dataset.sold;
+            const imageUrl = event.target.dataset.image;
+            const stock = event.target.dataset.stock;
+            openEditModal(productId, name, description, price, sold, imageUrl, stock);
+        }
+
+        if (event.target.matches('.delete-btn')) {
+            const productId = event.target.dataset.id;
+            deleteProduct(productId);
         }
     });
 
-    // Handle form submission
-    productForm.addEventListener('submit', function (event) {
+    // Open Edit Product Modal
+    function openEditModal(productId, name, description, price, sold, imageUrl, stock) {
+        console.log("Opening edit modal for product ID:", productId);
+
+        document.getElementById('editProductId').value = productId;
+        document.getElementById('editProductName').value = name;
+        document.getElementById('editProductDescription').value = description;
+        document.getElementById('editProductPrice').value = price;
+        document.getElementById('editProductSold').value = sold;
+        document.getElementById('editProductImageUrl').value = imageUrl;
+        document.getElementById('editProductStock').value = stock;
+
+        editProductModal.style.display = 'flex';
+    }
+
+    function deleteProduct(productId) {
+        if (confirm("Are you sure you want to delete this product?")) {
+            console.log("Deleting product ID:", productId);
+
+            fetch("deleteProduct.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ product_id: productId }) 
+            })
+                .then(response => response.json()) 
+                .then(data => {
+                    console.log("Delete response:", data); 
+                    if (data.status === "success") {
+                        alert("Product Deleted Successfully!");
+                        fetchProducts(); // Refresh table
+                    } else {
+                        alert("Delete Failed! " + data.message);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        }
+    }
+
+    // Update Product Function
+    editProductForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const productCode = document.getElementById('productCode').value;
-        const productName = document.getElementById('productName').value;
-        const category = document.getElementById('category').value;
-        const price = document.getElementById('price').value;
-        const quantity = document.getElementById('quantity').value;
-        const imageFile = imageUpload.files[0];
+        const formData = new FormData(editProductForm);
 
-        if (!productCode || !productName || !category || !price || !quantity || !imageFile) {
-            alert('Please fill all fields and upload an image.');
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const imageUrl = e.target.result;
-
-            // Add new row to the table
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${productTable.rows.length + 1}</td>
-                <td>${productCode}</td>
-                <td>${productName}</td>
-                <td>${category}</td>
-                <td>${price}</td>
-                <td>${quantity}</td>
-                <td><img src="${imageUrl}" alt="Product Image" style="width: 50px; height: 50px;"></td>
-                <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </td>
-            `;
-            productTable.appendChild(newRow);
-
-            // Add click event to the new row (for product details)
-            newRow.addEventListener('click', () => {
-                productDetailsContent.innerHTML = `
-                    <p><strong>Product Code:</strong> ${productCode}</p>
-                    <p><strong>Name:</strong> ${productName}</p>
-                    <p><strong>Category:</strong> ${category}</p>
-                    <p><strong>Price:</strong> ${price}</p>
-                    <p><strong>Quantity:</strong> ${quantity}</p>
-                    <img src="${imageUrl}" alt="Product Image">
-                `;
-                productDetailsModal.style.display = 'flex';
-            });
-
-            // Add click event to the Edit button (stop propagation)
-            const editButton = newRow.querySelector('.edit-btn');
-            editButton.addEventListener('click', function (event) {
-                event.stopPropagation(); // Stop event from bubbling up to the row
-                editProduct(this);
-            });
-
-            // Add click event to the Delete button (stop propagation)
-            const deleteButton = newRow.querySelector('.delete-btn');
-            deleteButton.addEventListener('click', function (event) {
-                event.stopPropagation(); // Stop event from bubbling up to the row
-                deleteProduct(this);
-            });
-
-            // Clear form and close modal
-            productForm.reset();
-            previewImage.style.display = 'none';
-            modal.style.display = 'none';
-        };
-        reader.readAsDataURL(imageFile);
+        fetch("editProduct.php", {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.text()) 
+            .then(data => {
+                console.log("Update response:", data);
+                alert("Product Updated Successfully!");
+                editProductModal.style.display = 'none'; 
+                fetchProducts(); 
+            })
+            .catch(error => console.error("Error:", error));
     });
+
+    // Add Product Function
+    addProductForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(addProductForm);
+
+        fetch("addProduct.php", {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.json()) 
+            .then(data => {
+                console.log("Add response:", data);
+                if (data.status === "success") {
+                    alert("Product Added Successfully!");
+                    addProductModal.style.display = 'none';
+                    fetchProducts(); 
+                } else {
+                    alert("Add Failed! " + data.message);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+    });
+
 });
-
-// Edit Product Functionality
-function editProduct(button) {
-    const row = button.closest('tr');
-    const cells = row.querySelectorAll('td');
-
-    // Populate the form with the row's data
-    document.getElementById('productCode').value = cells[1].textContent;
-    document.getElementById('productName').value = cells[2].textContent;
-    document.getElementById('category').value = cells[3].textContent;
-    document.getElementById('price').value = cells[4].textContent;
-    document.getElementById('quantity').value = cells[5].textContent;
-
-    // Set the image preview (if applicable)
-    const imageSrc = cells[6].querySelector('img').src;
-    const previewImage = document.getElementById('previewImage');
-    previewImage.src = imageSrc;
-    previewImage.style.display = 'block';
-
-    // Open the modal for editing
-    const modal = document.getElementById('productModal');
-    modal.style.display = 'flex';
-
-    // Update the form submission to handle editing
-    const productForm = document.getElementById('productForm');
-    productForm.removeEventListener('submit', handleFormSubmit); // Remove old listener
-    productForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        // Update the row with new data
-        cells[1].textContent = document.getElementById('productCode').value;
-        cells[2].textContent = document.getElementById('productName').value;
-        cells[3].textContent = document.getElementById('category').value;
-        cells[4].textContent = document.getElementById('price').value;
-        cells[5].textContent = document.getElementById('quantity').value;
-
-        // Update the image (if changed)
-        const newImageFile = document.getElementById('imageUpload').files[0];
-        if (newImageFile) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                cells[6].querySelector('img').src = e.target.result;
-            };
-            reader.readAsDataURL(newImageFile);
-        }
-
-        // Close the modal and reset the form
-        modal.style.display = 'none';
-        productForm.reset();
-        previewImage.style.display = 'none';
-    });
-}
-
-// Delete Product Functionality
-function deleteProduct(button) {
-    const row = button.closest('tr');
-    row.remove();
-}
