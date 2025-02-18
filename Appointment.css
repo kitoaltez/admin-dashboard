@@ -1,0 +1,311 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    background-color: #f4f4f4;
+    height: 100vh;
+    width: 100vw;
+}
+
+.form-container{
+    height: 100vh;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.sidebar-container{
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar .logo img {
+    width: 100%;
+    max-width: 150px;
+    display: block;
+    margin: 0 auto;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.sidebar ul li:hover {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #f4f4f4;
+}
+
+.sidebar ul li.active {
+    background-color: #f4f4f4;
+}
+
+.sidebar ul li a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.top-bar input {
+    padding: 10px;
+    width: 200px;
+}
+
+.top-bar button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f4;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content form label {
+    margin-bottom: 5px;
+}
+
+.modal-content form input, .modal-content form textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.modal-content form button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.gg{
+    width: 100px;
+}
+
+.close {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+#appointmentDetailsModal .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 500px;
+}
+
+#appointmentDetailsContent img {
+    width: 100px;
+    height: 100px;
+    margin-top: 10px;
+}
+
+/* Add this to your existing CSS */
+#appointmentDetailsModal .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 500px;
+}
+
+#appointmentDetailsContent {
+    display: flex;
+    flex-direction: column;
+}
+
+#appointmentDetailsContent p {
+    margin: 5px 0;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.reply-btn {
+    background-color: #fff7b3;
+    color: black;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.reply-btn::before {
+    content: "↩";
+}
+
+.approve-btn {
+    background-color: #90ee90;
+    color: black;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.approve-btn::after {
+    content: "✔";
+}
+
+.deny-btn {
+    background-color: #ffb3b3;
+    color: black;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.deny-btn::after {
+    content: "✖";
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 10px;
+    }
+
+    .sidebar .logo img {
+        max-width: 100px;
+    }
+
+    .sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .sidebar ul li {
+        padding: 5px 10px;
+    }
+
+    .content {
+        padding: 10px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .top-bar input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .modal-content {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar ul li {
+        padding: 5px;
+    }
+
+    .top-bar button {
+        width: 100%;
+    }
+
+    table th, table td {
+        padding: 5px;
+    }
+}
