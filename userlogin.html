@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="userlogin.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+       
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form action="userlogin.php" method="POST">
+            <input type="text" placeholder="Username" name="username" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <select name="role" required>
+                <option >Select Role</option>
+                <option value="Admin">Admin</option>
+                <option value="product_manager">Product Manager</option>
+                <option value="order_manager">Order Manager</option>
+            </select>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>
