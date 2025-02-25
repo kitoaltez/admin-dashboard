@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Dashboard</title>
+    <title>Order Dashboard</title>
     <link rel="stylesheet" href="Dashboard.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -15,26 +15,31 @@
             <img src="logo.png" alt="Computer Bucket">
         </div>
         <ul>
-            <li><a href="#">Product Management</a></li>
+            <li><a href="admin.html">Product Management</a></li>
             <li><a href="#">User Information</a></li>
-            <li><a href="admin.order.html">Order Management</a></li>
-            <li><a href="#" >Sales</a></li>
-            <li><a href="#" >On Delivery</a></li>
+            <li>Order Management</li>
+            <li><a href="#">Sales</a></li>
+            <li><a href="#">On Delivery</a></li>
         </ul>
     </div>
 
     <div class="content">
-        <h2>Product List</h2>
+        <h2>Order List</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Product Id</th>
-                    <th>Product Name</th>
-                    <th>Product Description</th>
+                    <th>Order Id</th>
+                    <th>User Id</th>
+                    <th>Customer Name</th>
+                    <th>Contact Number</th>
+                    <th>Address</th>
+                    <th>Product name</th>
                     <th>Product Price</th>
-                    <th>Product Sold</th>
-                    <th>Image Url</th>
-                    <th>Product Stock</th>>
+                    <th>Product quantity</th>
+                    <th>Total Price</th>
+                    <th>Order Status</th>
+                    <th>Ordered at</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="productTable">
@@ -42,6 +47,6 @@
         </table>
     </div>
 
-    <script src="admin.js"></script>
+    <script src="#"></script>
 </body>
 </html>
