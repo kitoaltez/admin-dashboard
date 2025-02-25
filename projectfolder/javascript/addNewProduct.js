@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function fetchProducts() {
         try {
             console.log("Fetching products...");
-            const response = await fetch("productFetch.php");
+            const response = await fetch("../phpfile/productFetch.php");
             const data = await response.json();
             console.log("Products received:", data);
 
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (confirm("Are you sure you want to delete this product?")) {
             try {
                 console.log("Deleting product ID:", productId);
-                const response = await fetch("deleteProduct.php", {
+                const response = await fetch("../phpfile/deleteProduct.php", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ product_id: productId }),
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const formData = new FormData(editProductForm);
 
         try {
-            const response = await fetch("editProduct.php", {
+            const response = await fetch("../phpfile/editProduct.php", {
                 method: "POST",
                 body: formData,
             });
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const formData = new FormData(addProductForm);
 
         try {
-            const response = await fetch("addProduct.php", {
+            const response = await fetch("../phpfile/addProduct.php", {
                 method: "POST",
                 body: formData,
             });

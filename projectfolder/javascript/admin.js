@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function fetchProducts() {
         try {
             console.log("Fetching products...");
-            const response = await fetch("productFetch.php");
+            const response = await fetch("../phpfile/productFetch.php");
             const data = await response.json();
             console.log("Products received:", data);
 

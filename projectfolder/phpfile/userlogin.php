@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($password === $user['password']) {
             if ($role !== $user['role']) {
-                header("Location: userlogin.html?error=Selected role does not match our records!");
+                header("Location: ../views/userlogin.html?error=Selected role does not match our records!");
                 exit();
             }
 
@@ -33,24 +33,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             switch ($user['role']) {
                 case "Admin":
-                    header("Location: admin.html?success=Login Successfully");
+                    header("Location: ../views/admin.html?success=Login Successfully");
                     exit();
                 case "Product Manager":
-                    header("Location: product.html?success=Login Successfully");
+                    header("Location: ../views/product.html?success=Login Successfully");
                     exit();
                 case "Order Manager":
-                    header("Location: order.html?success=Login Successfully");
+                    header("Location: ../views/order.html?success=Login Successfully");
                     exit();
                 default:
-                    header("Location: userlogin.html?error=Invalid role!");
+                    header("Location: ../views/userlogin.html?error=Invalid role!");
                     exit();
             }
         } else {
-            header("Location: userlogin.html?error=Incorrect password!");
+            header("Location: ../views/userlogin.html?error=Incorrect password!");
             exit();
         }
     } else {
-        header("Location: userlogin.html?error=Invalid username!");
+        header("Location: ../views/userlogin.html?error=Invalid username!");
         exit();
     }
 }
