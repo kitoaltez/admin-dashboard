@@ -9,6 +9,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("DOM fully loaded");
 
+      //PHP TOASTIFY 
+      const params = new URLSearchParams(window.location.search);
+      const error = params.get('error');
+      const success = params.get('success');
+  
+      if (error) {
+          Toastify({
+              text: error,
+              duration: 3000,
+              gravity: "top",
+              position: "center",
+              backgroundColor: "red",
+          }).showToast();
+      }
+  
+      if (success) {
+          Toastify({
+              text: success,
+              duration: 3000,
+              gravity: "top",
+              position: "center",
+              backgroundColor: "green",
+          }).showToast();
+      }
+
+
     // Open Add Product Modal
     addProductBtn.addEventListener("click", () => {
         addProductForm.reset();
@@ -120,10 +146,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("Delete response:", data);
 
                 if (data.status === "success") {
-                    alert("Product Deleted Successfully!");
+                    Toastify({
+                        text: "Deleted Successfully!",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "left",
+                        backgroundColor: "green",
+                    }).showToast();
                     fetchProducts(); // Refresh table
                 } else {
-                    alert("Delete Failed! " + data.message);
+                    Toastify({
+                        text: "Failed to Delete",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "left",
+                        backgroundColor: "green",
+                    }).showToast();
                 }
             } catch (error) {
                 console.error("Error:", error);
@@ -145,8 +183,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const data = await response.text();
             console.log("Update response:", data);
-
-            alert("Product Updated Successfully!");
+            Toastify({
+                text: "Product Updated Successfully!",
+                duration: 3000,
+                gravity: "top",
+                position: "left",
+                backgroundColor: "green",
+            }).showToast();
             editProductModal.style.display = "none";
             fetchProducts();
         } catch (error) {
@@ -170,11 +213,23 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Add response:", data);
 
             if (data.status === "success") {
-                alert("Product Added Successfully!");
+                Toastify({
+                    text: "Product Added Successfully!",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "left",
+                    backgroundColor: "green",
+                }).showToast();
                 addProductModal.style.display = "none";
                 fetchProducts();
             } else {
-                alert("Add Failed! " + data.message);
+                Toastify({
+                    text: "Add Failed! " + data.message,
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "red",
+                }).showToast();
             }
         } catch (error) {
             console.error("Error:", error);

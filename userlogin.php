@@ -8,46 +8,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = isset($_POST['role']) ? $_POST['role'] : null;
 
     if (!$username || !$password || !$role || $role == "Select Role") {
-        header("Location: userlogin.html?error=⚠️ Please fill in all fields correctly!");
+        header("Location: userlogin.html?error=Please fill in all fields correctly!");
         exit();
     }
 
-
-    $query = "SELECT employee_id, username, password, role FROM employee WHERE username = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $username);
+    $sql = "SELECT * FROM employee WHERE LOWER(username) = LOWER (?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows == 1) {
         $user = $result->fetch_assoc();
 
-        if (password_verify($password, $user['password'])) {
-            if ($role === $user['role']) {
-                $_SESSION['user_id'] = $user['employee_id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['role'] = $user['role'];
-
-                if ($user['role'] === 'Admin') {
-                    echo "<script>alert('Login Successfully'); window.location.href='dashboard.html';</script>";
-                    exit();
-                } elseif ($user['role'] === 'product_manager') {
-                    echo "<script>alert('Login Successfully'); window.location.href='product_management.php';</script>";
-                    exit();
-                } elseif ($user['role'] === 'order_manager') {
-                    echo "<script>alert('Login Successfully'); window.location.href='order_management.php';</script>";
-                    exit();
-                }
-            } else {
-                header("Location: userlogin.html?error= Selected role does not match our records!");
+        if ($password === $user['password']) {
+            if ($role !== $user['role']) {
+                header("Location: userlogin.html?error=Selected role does not match our records!");
                 exit();
             }
+
+            $_SESSION['user_id'] = $user['employee_id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+
+            switch ($user['role']) {
+                case "Admin":
+                    header("Location: admin.html?success=Login Successfully");
+                    exit();
+                case "Product Manager":
+                    header("Location: product.html?success=Login Successfully");
+                    exit();
+                case "Order Manager":
+                    header("Location: order.html?success=Login Successfully");
+                    exit();
+                default:
+                    header("Location: userlogin.html?error=Invalid role!");
+                    exit();
+            }
         } else {
-            header("Location: userlogin.html?error= Incorrect password!");
+            header("Location: userlogin.html?error=Incorrect password!");
             exit();
         }
     } else {
-        header("Location: userlogin.html?error= Invalid username!");
+        header("Location: userlogin.html?error=Invalid username!");
         exit();
     }
 }
