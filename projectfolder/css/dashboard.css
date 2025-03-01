@@ -46,17 +46,15 @@ body {
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
+    text-align: center;
   }
   
-  .sidebar ul li:hover {
+  .sidebar ul li:hover,
+  .sidebar ul li.active {
     padding: 10px;
     cursor: pointer;
     background-color: #f4f4f4;
-  
-  }
-  
-  .sidebar ul li.active {
-    background-color: #f4f4f4;
+    scale: 1.2;
   }
   
   .sidebar ul li a {
